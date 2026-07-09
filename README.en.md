@@ -1,25 +1,61 @@
-# 🧩 My Skill Name
+# Fundamental Factor Analysis — README.en
 
-[简体中文](README.md) | **English**
+Compute, validate, and analyze fundamental (financial statement) factors for Chinese A-shares. Fills the gap of **zero fundamental factors** in the existing 800+ OHLCV-only QUANTSKILLS ecosystem.
 
-> One-line positioning.
+## What It Does
 
-## 📖 What This Is
+| Area | Factors |
+|------|---------|
+| **Valuation** | EP, BP, SP, CP, FCFP, GP/A (all as inverse ratios) |
+| **Quality** | ROE, ROA, Gross Margin, Operating Margin, Accruals, Leverage, Cash Flow Quality |
+| **Growth** | Earnings Growth, Revenue Growth, ROE Growth, Growth Stability |
+| **Composite** | Piotroski F-Score, Quality Minus Junk, PEG, GARP, Value+Quality |
 
-...
+### Validation
 
-## ⚠️ Disclaimer
+- Rank IC analysis (mean, IR, t-stat, positive ratio)
+- Decile grouped portfolio returns (monotonicity, long-short spread)
+- Fama-MacBeth cross-sectional regression (with control variables)
+- IC decay curve and half-life estimation
+- Sub-sample stability tests
 
-This repository organizes research methods only. It is not affiliated with any covered entity, does not verify any performance claims, and does not constitute investment advice.
+## Data Sources (Pandadata)
 
-## 📜 License
+- `panda_data.get_fina_performance()` — Financial snapshots (30+ fields)
+- `panda_data.get_fina_reports()` — Detailed financial statements (100+ fields)
+- `panda_data.get_factor()` — Daily data + market_cap
+- `panda_data.get_market_data()` — Daily price/volume
 
-GPL-3.0. See [LICENSE](LICENSE).
+## Usage
 
-## 🐼 PandaAI / QUANTSKILLS Community
+```python
+import panda_data
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/quantskills/.github/main/profile/assets/pandaai-community-qr.jpg" alt="PandaAI community QR code" width="220">
-  <br>
-  <sub>Scan the QR code to join the PandaAI community for QUANTSKILLS skills, agent workflows, and quantitative research practice.</sub>
-</div>
+# Step 1: Fetch financial data
+fina = panda_data.get_fina_performance(
+    symbol=['000001.SZ', '000002.SZ'],
+    end_quarter='2024q4',
+    fields=['symbol', 'net_profit_parent', 'equity_parent_common']
+)
+
+# Step 2: Get market_cap
+mkt = panda_data.get_factor(
+    symbol=['000001.SZ', '000002.SZ'],
+    start_date='20250115',
+    end_date='20250115',
+    factors=['market_cap']
+)
+
+# Step 3: Compute factor
+bp = fina.merge(mkt, on='symbol')
+bp['BP'] = bp['equity_parent_common'] / bp['market_cap']
+```
+
+## Quick Start
+
+```
+"Compute EP factor for CSI 300 constituents, run IC analysis and decile returns"
+"Build ROE + gross margin composite quality factor with Fama-MacBeth regression"
+"Calculate Piotroski F-Score for all A-shares, compare top vs bottom group performance"
+"Analyze BP factor IC decay curve — what is optimal rebalance frequency?"
+```
