@@ -20,6 +20,66 @@ quantSkills:
   summary_en: Compute, validate, and analyze A-share fundamental factors. Covers value (EP/BP/SP/CP/FCFP/GP/A), quality (ROE/ROA/gross margin/accruals/leverage), growth (earnings growth/revenue growth/analyst revision) and composite factors. Uses Pandadata financial APIs with IC analysis, grouped returns, and Fama-MacBeth regression for validation.
 ---
 
+```json qsh-form
+{
+  "version": 1,
+  "task": {
+    "placeholder": "补充样本期、财报口径、行业处理、控制变量或复合因子要求"
+  },
+  "fields": [
+    {
+      "key": "factor",
+      "label": "基本面因子",
+      "type": "select",
+      "default": "EP",
+      "options": [
+        { "value": "EP", "label": "EP（盈利收益率）" },
+        { "value": "BP", "label": "BP（账面市值比）" },
+        { "value": "SP", "label": "SP（营收市值比）" },
+        { "value": "CP", "label": "CP（经营现金流市值比）" },
+        { "value": "ROE", "label": "ROE（净资产收益率）" },
+        { "value": "ROA", "label": "ROA（总资产收益率）" },
+        { "value": "Accruals", "label": "应计利润" },
+        { "value": "Earnings_Growth", "label": "盈利增长" },
+        { "value": "QMJ", "label": "质量减垃圾（QMJ）" },
+        { "value": "F_Score", "label": "Piotroski F-Score" }
+      ]
+    },
+    {
+      "key": "universe",
+      "label": "股票池",
+      "type": "select",
+      "default": "000300.SH",
+      "options": [
+        { "value": "000300.SH", "label": "沪深300" },
+        { "value": "000905.SH", "label": "中证500" },
+        { "value": "000852.SH", "label": "中证1000" },
+        { "value": "all_a", "label": "全A股" }
+      ]
+    },
+    {
+      "key": "date",
+      "label": "分析基准日",
+      "type": "date",
+      "help": "留空由前端使用今天，并按可得财报日期对齐"
+    },
+    {
+      "key": "horizon",
+      "label": "预测周期",
+      "type": "select",
+      "default": "20",
+      "options": [
+        { "value": "1", "label": "未来1日" },
+        { "value": "5", "label": "未来5日" },
+        { "value": "20", "label": "未来20日" },
+        { "value": "60", "label": "未来60日" }
+      ]
+    }
+  ],
+  "prompt_template": "{{#task}}任务与材料：\n{{task}}\n\n{{/task}}{{#attachments}}用户上传的材料（已放入工作区）：\n{{attachments}}\n\n{{/attachments}}请分析 A 股基本面因子 {{factor}} 在股票池 {{universe}}{{#date}}、基准日 {{date}}{{/date}} 和预测周期 {{horizon}} 日下的表现，按财报实际可得时间对齐并处理 TTM、异常值及金融行业差异，完成 Rank IC、分组收益、Fama-MacBeth 与衰减检验，输出中文报告。"
+}
+```
+
 # Fundamental Factor Analysis
 
 Compute and analyze **financial-statement-driven** factors for Chinese A-shares. This skill bridges the gap between raw financial data (quarterly reports) and actionable alpha signals.
