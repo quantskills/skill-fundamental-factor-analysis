@@ -7,7 +7,7 @@ quantSkills:
   repository_url: https://github.com/quantskills/skill-fundamental-factor-analysis
   project_type: skill
   collection: factor-research
-  license: GPL-3.0
+  license: GPL-3.0-only
   category: tooling
   tags: [fundamental-factors, financial-statements, value-factor, quality-factor, growth-factor, a-share, ic-analysis, fama-macbeth, pandadata]
   platforms: [claude-code, codex, openclaw]
@@ -694,3 +694,7 @@ For each factor analyzed, produce:
 | 🔄 财报与行情日期对齐 | The `factor_date` used for `get_factor()` market_cap may differ from `end_quarter`. Align by using the last trading day of the quarter + 2 months. |
 | 🚫 新股/退市 | Stocks listed < 12 months should be excluded. De-listed stocks need status filtering via `get_stock_detail(status=1)`. |
 | ⚖️ TTM vs 单季 | TTM figures smooth seasonal effects but introduce 12-month lag in signal. Single-quarter figures are noisier but more responsive. |
+
+## Pandadata compatibility
+
+[Pandadata 1.0.6 compatibility](references/pandadata-compatibility.md) — exact SDK baseline, validation scope, and shared guidance for all supported agent runtimes.

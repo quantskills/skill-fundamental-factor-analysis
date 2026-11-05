@@ -59,3 +59,6 @@ bp['BP'] = bp['equity_parent_common'] / bp['market_cap']
 "Calculate Piotroski F-Score for all A-shares, compare top vs bottom group performance"
 "Analyze BP factor IC decay curve — what is optimal rebalance frequency?"
 ```
+
+
+Pandadata compatibility maintenance: [abgyjaguo](https://github.com/abgyjaguo). Existing authorship is retained.

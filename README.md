@@ -63,3 +63,6 @@ skill-fundamental-factor-analysis/
 "计算全 A 股的 Piotroski F-Score，高分组 vs 低分组对比"
 "验证 BP 因子的 IC 衰减曲线，最佳再平衡频率是多少"
 ```
+
+
+Pandadata 兼容维护：[abgyjaguo](https://github.com/abgyjaguo)，保留原项目作者署名。

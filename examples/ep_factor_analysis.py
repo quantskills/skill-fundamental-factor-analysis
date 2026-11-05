@@ -30,8 +30,7 @@ def fetch_data():
     # 1. 获取沪深300成分股
     print("[1/4] 获取沪深300成分股...")
     stock_detail = panda_data.get_stock_detail(
-        market='cn',
-        fields=['symbol', 'display_name', 'list_date'],
+        fields=['symbol', 'name', 'listed_date'],
         status=1
     )
     
@@ -42,19 +41,19 @@ def fetch_data():
         start_date=FACTOR_DATE,
         end_date=FACTOR_DATE,
         factors=['market_cap'],
-        type='index_stock',
-        index_code='000300.SH'
+        type='stock',
+        index_component='000300'
     )
     
     if hs300 is None or hs300.empty:
-        print("⚠️  无法获取沪深300成分股，使用全市场股票替代")
-        symbols = stock_detail['symbol'].tolist()
+        raise RuntimeError("沪深300股票池数据缺失，不能替换为全市场")
     else:
         symbols = hs300['symbol'].unique().tolist()
     
     print(f"  共 {len(symbols)} 只股票")
     
     # 2. 过滤新股（上市不足12个月）
+    stock_detail = stock_detail.rename(columns={'listed_date': 'list_date'})
     symbols = _filter_new_stocks(symbols, stock_detail)
     print(f"  排除新股后: {len(symbols)} 只股票")
     
